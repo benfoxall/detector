@@ -6,26 +6,40 @@
 </head>
 <body>
 <h1><a href="."> / </a>video</h1>
-<video></video>
+<video src="debug-video.webm" autoplay="true" style="display:none"></video>
 
 <script src="lib/three.js"></script>
 <script>
-  navigator.getUserMedia = navigator.getUserMedia || 
-                           navigator.webkitGetUserMedia || 
-                           navigator.mozGetUserMedia;
 
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-  var video = document.querySelector('video');
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setClearColor(0xeeeeee);
 
-  navigator.getUserMedia({
-    video:true,
-    audio:false
-  }, function(stream){
+  document.body.appendChild( renderer.domElement );
 
-    video.src = window.webkitURL.createObjectURL(stream);
-    video.play();
+  video = document.querySelector( 'video' );
 
-  }, console.error.bind(console))
+  texture = new THREE.VideoTexture( video );
+
+  var geometry = new THREE.PlaneGeometry( 1, 1, 1 );
+  var material = new THREE.MeshBasicMaterial( { color: 0xffffff , map: texture, side: THREE.DoubleSide} );
+  var plane = new THREE.Mesh( geometry, material );
+  scene.add( plane );
+
+  camera.position.z = 1.5;
+
+  function render() {
+    requestAnimationFrame( render );
+
+    plane.rotation.x += 0.01;
+    plane.rotation.y += 0.007;
+
+    renderer.render( scene, camera );
+  }
+  render();
 
 </script>
 </body>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>video</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1><a href="."> / </a>video</h1>
+<video></video>
+
+<script src="lib/three.js"></script>
+<script>
+  navigator.getUserMedia = navigator.getUserMedia || 
+                           navigator.webkitGetUserMedia || 
+                           navigator.mozGetUserMedia;
+
+
+  var video = document.querySelector('video');
+
+  navigator.getUserMedia({
+    video:true,
+    audio:false
+  }, function(stream){
+
+    video.src = window.webkitURL.createObjectURL(stream);
+    video.play();
+
+  }, console.error.bind(console))
+
+</script>
+</body>
+</html>

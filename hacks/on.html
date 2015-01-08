@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<button onclick="set()">random</button>
+<button onclick="set('#fff')">white</button>
+<button onclick="set('#000')">black</button>
+<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script> 
+<script>
+
+var pubnub = PUBNUB.init({
+	publish_key:   'demo',
+	subscribe_key: 'demo'
+});
+
+pubnub.subscribe({ 
+	channel: 'on-cl',
+	message: function(m){
+		document.body.style.backgroundColor = m;
+	}
+})
+
+function set(color){
+	color = color || '#'+Math.random().toString(16).substr(2,6);
+	pubnub.publish({
+		channel: 'on-cl',
+		message: color
+	})
+}
+
+</script>
+</body>
+</html>
